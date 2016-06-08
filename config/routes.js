@@ -41,6 +41,9 @@ module.exports.routes = {
   'post /admin/conferences': 'ConferenceController.create',
   'delete /admin/conferences/:id': 'ConferenceController.destroy',
 
+  'get /admin/conferences/:id/start': 'ConferenceController.start',
+  'get /admin/conferences/:id/stop': 'ConferenceController.stop',
+
   'get /admin/redirects': 'RedirectController.index',
   'post /admin/redirects': 'RedirectController.create',
   'delete /admin/redirects/:id': 'RedirectController.destroy',

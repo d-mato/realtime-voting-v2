@@ -7,7 +7,13 @@ Conference.coffee
 
 require 'date-utils'
 
+Status =
+  notOpened: 0
+  opening: 1
+  closed: 2
+
 module.exports =
+
   attributes:
     date:
       type: 'datetime'
@@ -20,8 +26,17 @@ module.exports =
       type: 'string'
       required: true
     status:
-      type: 'string'
-      defaultsTo: ''
+      defaultsTo: Status.notOpened
+
+    start: (callback) ->
+      @startTime = (new Date()).getTime()
+      @status = Status.opening
+      @save callback
+
+    stop: (callback) ->
+      @endTime = (new Date()).getTime()
+      @status = Status.closed
+      @save callback
 
   beforeCreate: (values, callback) ->
     date = (new Date(values.date))
@@ -31,5 +46,4 @@ module.exports =
       values.key = date.toFormat('YYMMDDHH24MI')
       callback()
 
- start: ->
 
