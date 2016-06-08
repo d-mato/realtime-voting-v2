@@ -9,19 +9,27 @@ require 'date-utils'
 
 module.exports =
   attributes:
-    startDate:
-      type: 'string'
+    date:
+      type: 'datetime'
       required: true
-    endDate:
-      type: 'string'
+    startTime:
+      type: 'integer'
+    endTime:
+      type: 'integer'
     name:
       type: 'string'
       required: true
+    status:
+      type: 'string'
+      defaultsTo: ''
 
   beforeCreate: (values, callback) ->
-    date = (new Date(values.startDate))
+    date = (new Date(values.date))
     if date.toString() == 'Invalid Date'
       callback({error: 'Invalid Date'})
     else
       values.key = date.toFormat('YYMMDDHH24MI')
       callback()
+
+ start: ->
+

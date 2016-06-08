@@ -18,7 +18,7 @@ module.exports =
 
   create: (req, res) ->
     params =
-      startDate: req.body.startDate
+      date: req.body.date
       name: req.body.name
     Conference.create(params).exec (err, created) ->
       if err
