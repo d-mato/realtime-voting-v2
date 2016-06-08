@@ -34,7 +34,12 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+  'get /admin/conferences': 'ConferenceController.index',
+  'get /admin/conferences/:id': 'ConferenceController.show',
+  'post /admin/conferences': 'ConferenceController.create',
+  'delete /admin/conferences/:id': 'ConferenceController.destroy',
 
   /***************************************************************************
   *                                                                          *

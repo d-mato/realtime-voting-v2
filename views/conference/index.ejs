@@ -1,0 +1,36 @@
+
+<form action="/admin/conferences" method="post">
+  <div class="form-inline form-group">
+    <div class="form-group">
+      <label>カンファレンス日時</label>
+      <input type="text" name="startDate" class="form-control" required/>
+    </div>
+    <div class="form-group">
+      <label >主催者 Or RoomNumber </label>
+      <input type="text" name="name" class="form-control" style="ime-inactive;" required/>
+    </div>
+    <button type="submit" class="btn btn-primary">登録</button>
+  </div>
+</form>
+
+<% conferences.forEach(function(conference) { %>
+<li><a href="/admin/conferences/<%= conference.id %>"><%= conference.key %></a> <%= conference.name %> <%= conference.startDate %> <button class="del" data-id="<%= conference.id %>">DEL</button></li>
+<% }) %>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script>
+$('.del').click(function() {
+  if (window.confirm('Are you sure to delete?')) {
+    $.ajax({
+      url: '/admin/conferences/'+$(this).attr('data-id'),
+      type: 'DELETE'
+    }).done(function() {
+      location.href = '/admin/conferences';
+    });
+  }
+});
+
+
+</script>
+
