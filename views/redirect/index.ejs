@@ -1,6 +1,4 @@
 <form action="/admin/redirects" method="post">
-
-
   <div class="form-inline form-group">
     <div class="form-group">
       <label >リダイレクト先URL </label>
@@ -18,8 +16,6 @@
 <li><%= redirect.key %> <%= redirect.url %> <button class="del" data-id="<%= redirect.id %>">DEL</button></li>
 <% }) %>
 
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script>
 $('.del').click(function() {
   if (window.confirm('Are you sure to delete?')) {
@@ -31,7 +27,5 @@ $('.del').click(function() {
     });
   }
 });
-
-
 </script>
 
