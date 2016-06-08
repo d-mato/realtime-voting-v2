@@ -36,6 +36,10 @@ module.exports.routes = {
     view: 'homepage'
   },
 
+  '/conferences/:key': {
+    view: 'client'
+  },
+
   'get /admin/conferences': 'ConferenceController.index',
   'get /admin/conferences/:id': 'ConferenceController.show',
   'post /admin/conferences': 'ConferenceController.create',
@@ -47,6 +51,7 @@ module.exports.routes = {
   'get /admin/redirects': 'RedirectController.index',
   'post /admin/redirects': 'RedirectController.create',
   'delete /admin/redirects/:id': 'RedirectController.destroy',
+
   'get /(:key)': 'RedirectController.redirect',
 
   /***************************************************************************
