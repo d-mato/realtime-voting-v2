@@ -1,0 +1,37 @@
+<form action="/admin/redirects" method="post">
+
+
+  <div class="form-inline form-group">
+    <div class="form-group">
+      <label >リダイレクト先URL </label>
+      <input name="url" type="url" class="form-control" style="ime-inactive;" required/>
+    </div>
+    <div class="form-group">
+      <label >リダイレクトKey</label>
+      <input name="key" type="text" class="form-control" required/>
+    </div>
+    <button type="submit" class="btn btn-primary">登録</button>
+  </div>
+</form>
+
+<% redirects.forEach(function(redirect) { %>
+<li><%= redirect.key %> <%= redirect.url %> <button class="del" data-id="<%= redirect.id %>">DEL</button></li>
+<% }) %>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script>
+$('.del').click(function() {
+  if (window.confirm('Are you sure to delete?')) {
+    $.ajax({
+      url: '/admin/redirects/'+$(this).attr('data-id'),
+      type: 'DELETE'
+    }).done(function() {
+      location.href = '/admin/redirects';
+    });
+  }
+});
+
+
+</script>
+
