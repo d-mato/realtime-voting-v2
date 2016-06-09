@@ -45,6 +45,7 @@ module.exports =
         res.badRequest()
       else
         console.log 'Started!', item.key
+        sails.sockets.blast 'conference-started', item.toJSON() # Broadcast
         item.start (err) ->
           return res.badRequest() if err
           res.ok(item.toJSON())
@@ -56,8 +57,8 @@ module.exports =
         res.badRequest()
       else
         console.log 'Stopped!', item.key
+        sails.sockets.blast 'conference-stopped', item.toJSON() # Broadcast
         item.stop (err) ->
           return res.badRequest() if err
           res.ok(item.toJSON())
-
 

@@ -4,11 +4,24 @@ client
 
 <script>
 var office = '赤坂02';
-var key = location.href.split(/client\//)[1]; // Conference key
+var key = location.href.split(/conferences\//)[1]; // Conference key
 
-var socket = io.connect();
-socket.on('connect', function() {
-  console.log('connected');
+io.socket.on('conference-stopped', function(res) {
+  if (res.key == key) {
+    console.log('Stopped');
+    console.log(res);
+  }
+});
+
+io.socket.on('conference-started', function(res) {
+  if (res.key == key) {
+    console.log('Started');
+    console.log(res);
+  }
+});
+
+io.socket.get('/like', {}, function(res) {
+  console.log(res);
 });
 
 $('.like').click(function() {

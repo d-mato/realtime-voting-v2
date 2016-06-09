@@ -28,4 +28,8 @@
       $('.status').text(conference.status);
     });
   });
+
+  io.socket.get('/like/11', {}, function(res) {
+    console.log(res);
+  });
 </script>
