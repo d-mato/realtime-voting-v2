@@ -52,6 +52,8 @@ module.exports.routes = {
   'post /admin/redirects': 'RedirectController.create',
   'delete /admin/redirects/:id': 'RedirectController.destroy',
 
+  'post /likes': 'LikeController.create',
+
   'get /(:key)': 'RedirectController.redirect',
 
   /***************************************************************************

@@ -8,4 +8,12 @@ Like.coffee
 module.exports =
 
   attributes: {}
+  beforeCreate: (values, callback) ->
+    Conference.findOne({key: values.key}).exec (err, item) ->
+      return callback({error: 'Invalid conference key'}) if err or !item
+
+      values.conference_id = item.id
+      callback()
+
+
 

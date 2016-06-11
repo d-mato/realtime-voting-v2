@@ -20,14 +20,13 @@ io.socket.on('conference-started', function(res) {
   }
 });
 
-io.socket.get('/like', {}, function(res) {
+io.socket.on('conference-opened', function(res) {
   console.log(res);
 });
 
 $('.like').click(function() {
-  io.socket.post('/like', {sid: socket.id, office: office, key: key}, function(res) {
+  $.post('/likes', {office: office, key: key}, function(res) {
     console.log(res);
-    console.log('posted like');
   });
 });
 </script>
