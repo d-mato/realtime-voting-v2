@@ -54,6 +54,8 @@ module.exports.routes = {
 
   'post /likes': 'LikeController.create',
 
+  'post /attendances': 'AttendanceController.create',
+
   'get /(:key)': 'RedirectController.redirect',
 
   /***************************************************************************

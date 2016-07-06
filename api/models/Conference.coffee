@@ -26,6 +26,7 @@ module.exports =
       type: 'string'
       required: true
     status:
+      type: 'integer'
       defaultsTo: Status.notOpened
 
     start: (callback) ->
@@ -37,6 +38,9 @@ module.exports =
       @endTime = (new Date()).getTime()
       @status = Status.closed
       @save callback
+
+    isOpening: ->
+      @status == Status.opening
 
   beforeCreate: (values, callback) ->
     date = (new Date(values.date))

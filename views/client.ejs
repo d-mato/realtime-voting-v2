@@ -29,4 +29,10 @@ $('.like').click(function() {
     console.log(res);
   });
 });
+
+setInterval(function() {
+  $.post('/attendances', {office: office, key: key}, function(res) {
+    console.log(res);
+  });
+}, 3000);
 </script>

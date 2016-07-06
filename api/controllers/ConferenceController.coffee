@@ -5,6 +5,8 @@ ConferenceController
 @help        :: See http://links.sailsjs.org/docs/controllers
 ###
 
+SendStatusInterval = null
+
 module.exports =
 
   index: (req, res) ->
@@ -44,11 +46,17 @@ module.exports =
         console.log err
         res.badRequest()
       else
-        console.log 'Started!', item.key
-        sails.sockets.blast 'conference-started', item.toJSON() # Broadcast
         item.start (err) ->
           return res.badRequest() if err
+          console.log 'Started!', item.key
+          sails.sockets.blast 'conference-started', item.toJSON() # Broadcast
           res.ok(item.toJSON())
+          # clearInterval SendStatusInterval if SendStatusInterval
+          # SendStatusInterval = setInterval ->
+          #   sails.sockets.blast 'conference-opened', {status: 'opened'}
+          #   console.log 'interval'
+          # , 1000
+
 
   stop: (req, res) ->
     Conference.findOne(req.params.id).exec (err, item) ->
@@ -56,9 +64,9 @@ module.exports =
         console.log err
         res.badRequest()
       else
-        console.log 'Stopped!', item.key
-        sails.sockets.blast 'conference-stopped', item.toJSON() # Broadcast
         item.stop (err) ->
           return res.badRequest() if err
+          console.log 'Stopped!', item.key
+          sails.sockets.blast 'conference-stopped', item.toJSON() # Broadcast
           res.ok(item.toJSON())
-
+          # clearInterval SendStatusInterval if SendStatusInterval
