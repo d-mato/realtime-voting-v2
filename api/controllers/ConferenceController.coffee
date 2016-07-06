@@ -14,9 +14,11 @@ module.exports =
       res.view {conferences: items}
 
   show: (req, res) ->
-    Conference.findOne(req.params.id).exec (err, item) ->
+    Conference.findOne(req.params.id).populate('attendances').populate('likes').exec (err, item) ->
       return res.notFound() unless item
+      item.attendances = item.attendances.filter (attendance) -> attendance.createdAt.toString() != attendance.updatedAt.toString()
       res.view {conference: item}
+      console.log item
 
   create: (req, res) ->
     params =

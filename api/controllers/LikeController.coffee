@@ -12,11 +12,11 @@ module.exports = {
       return res.badRequest({error: 'Invalid conference key'}) if err or !conference
       return res.badRequest({error: 'Invalid conference status'}) unless conference.isOpening()
 
-      Attendance.findOne({conference_id: conference.id, session_id: req.sessionID}).exec (err, attendance) ->
+      Attendance.findOne({conference: conference.id, session_id: req.sessionID}).exec (err, attendance) ->
         return res.badRequest({error: 'Invalid client'}) if err or !attendance
         params =
-          conference_id: conference.id
-          attendance_id: attendance.id
+          conference: conference
+          attendance: attendance
         Like.create(params).exec (err, item) ->
           return res.badRequest()if err or !item
           res.send item.toJSON()

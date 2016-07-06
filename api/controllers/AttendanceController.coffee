@@ -13,7 +13,7 @@ module.exports = {
       return res.badRequest({error: 'Invalid conference status'}) unless conference.isOpening()
 
       params =
-        conference_id: conference.id
+        conference: conference.id
         office: req.body.office
         ip_addr: req.ip
         session_id: req.sessionID

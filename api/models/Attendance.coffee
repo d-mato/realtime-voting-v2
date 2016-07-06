@@ -8,5 +8,11 @@ Attendance.coffee
 module.exports =
 
   autoUpdatedAt: true
-  attributes: {}
+  attributes:
+    # Relation
+    conference:
+      model: 'conference'
+    likes:
+      collection: 'like'
+      via: 'attendance'
 

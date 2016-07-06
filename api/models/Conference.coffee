@@ -29,6 +29,15 @@ module.exports =
       type: 'integer'
       defaultsTo: Status.notOpened
 
+    # Relation
+    attendances:
+      collection: 'attendance'
+      via: 'conference'
+    likes:
+      collection: 'like'
+      via: 'conference'
+
+    # Methods
     start: (callback) ->
       @startTime = (new Date()).getTime()
       @status = Status.opening

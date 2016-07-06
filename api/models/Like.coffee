@@ -7,6 +7,10 @@ Like.coffee
 
 module.exports =
 
-  attributes: {}
+  attributes:
+    attendance:
+      model: 'attendance'
+    conference:
+      model: 'conference'
 
 
