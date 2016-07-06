@@ -8,14 +8,15 @@ LikeController
 module.exports = {
 
   create: (req, res) ->
-    params =
-      key: req.body.key
-      office: req.body.office
-      ip_addr: req.ip
-      session_id: req.sessionID
-    Like.create(params).exec (err, item) ->
-      return res.badRequest()if err or !item
-      res.send item.toJSON()
+    Conference.findOne({key: req.body.key}).exec (err, conference) ->
+      return res.badRequest({error: 'Invalid conference key'}) if err or !conference
+      return res.badRequest({error: 'Invalid conference status'}) unless conference.isOpening()
+
+      params =
+        conference_id: conference.id
+      Like.create(params).exec (err, item) ->
+        return res.badRequest()if err or !item
+        res.send item.toJSON()
 
 }
 
