@@ -1,16 +1,25 @@
+<div>key: <%= conference.key %></div>
 
-<%= conference.key %>
+<div>name: <%= conference.name %></div>
 
-<%= conference.name %>
+<div>date: <%= conference.date %></div>
 
-<%= conference.date %>
+<div>
+  <span class="status">
+    status: <%= conference.status %>
+  </span>
 
-<span class="status">
-<%= conference.status %>
-</span>
+  <button class="start">start</button>
+  <button class="stop">stop</button>
+</div>
 
-<button class="start">start</button>
-<button class="stop">stop</button>
+<div>
+attendances: <%= conference.attendances.length %>
+</div>
+
+<div>
+likes: <%= conference.likes.length %>
+</div>
 
 <script>
   $('.start').click(function() {

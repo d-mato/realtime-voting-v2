@@ -36,8 +36,9 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  '/conferences/:key': {
-    view: 'client'
+  'get /conferences/:key': {
+    view: 'client/like',
+    locals: {layout: 'layout_client'}
   },
 
   'get /admin/conferences': 'ConferenceController.index',
