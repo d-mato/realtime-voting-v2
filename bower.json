@@ -1,0 +1,22 @@
+{
+  "name": "realtime-voting-v2",
+  "description": "a Sails application",
+  "main": "app.js",
+  "authors": [
+    "daiki"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/d-mato/realtime-voting-v2",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "v4.0.0-alpha.2",
+    "jquery": "^3.1.0"
+  }
+}
