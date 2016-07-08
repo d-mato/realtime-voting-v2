@@ -6,11 +6,11 @@
 
 <div>
   <span class="status">
-    status: <%= conference.status %>
+    status: <span><%= conference.status %></span>
   </span>
 
-  <button class="start">start</button>
-  <button class="stop">stop</button>
+  <button class="start btn btn-success">start</button>
+  <button class="stop btn btn-danger">stop</button>
 </div>
 
 <div>
@@ -21,24 +21,3 @@ attendances: <%= conference.attendances.length %>
 likes: <%= conference.likes.length %>
 </div>
 
-<script>
-  $('.start').click(function() {
-    $.ajax({
-      url: location.href+'/start'
-    }).done(function(conference) {
-      $('.status').text(conference.status);
-    });
-  });
-
-  $('.stop').click(function() {
-    $.ajax({
-      url: location.href+'/stop'
-    }).done(function(conference) {
-      $('.status').text(conference.status);
-    });
-  });
-
-  io.socket.get('/like/11', {}, function(res) {
-    console.log(res);
-  });
-</script>

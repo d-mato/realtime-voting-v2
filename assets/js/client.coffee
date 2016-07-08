@@ -28,7 +28,8 @@ io.socket.on 'conference-started', (res) ->
     update_alert 'Conference started!'
     console.log(res)
 
-io.socket.on 'conference-opened', (res) ->
+io.socket.on 'enabled-like', (res) ->
+  reset()
   console.log(res)
 
 $('.like').click ->

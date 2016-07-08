@@ -5,8 +5,6 @@ ConferenceController
 @help        :: See http://links.sailsjs.org/docs/controllers
 ###
 
-SendStatusInterval = null
-
 module.exports =
 
   index: (req, res) ->
@@ -16,8 +14,10 @@ module.exports =
   show: (req, res) ->
     Conference.findOne(req.params.id).populate('attendances').populate('likes').exec (err, item) ->
       return res.notFound() unless item
-      item.attendances = item.attendances.filter (attendance) -> attendance.createdAt.toString() != attendance.updatedAt.toString()
-      res.view {conference: item}
+      item.attendances = item.attendances.filter (attendance) ->
+        # 最終更新が1分以内かつ継続的に閲覧している参加者だけをフィルタリング
+        (attendance.createdAt.toString() != attendance.updatedAt.toString()) and ((new Date()).getTime() - attendance.updatedAt.getTime() < 60*1000)
+      res.view {conference: item, layout: 'layout_admin'}
       console.log item
 
   create: (req, res) ->
@@ -53,11 +53,6 @@ module.exports =
           console.log 'Started!', item.key
           sails.sockets.blast 'conference-started', item.toJSON() # Broadcast
           res.ok(item.toJSON())
-          # clearInterval SendStatusInterval if SendStatusInterval
-          # SendStatusInterval = setInterval ->
-          #   sails.sockets.blast 'conference-opened', {status: 'opened'}
-          #   console.log 'interval'
-          # , 1000
 
 
   stop: (req, res) ->
@@ -71,4 +66,3 @@ module.exports =
           console.log 'Stopped!', item.key
           sails.sockets.blast 'conference-stopped', item.toJSON() # Broadcast
           res.ok(item.toJSON())
-          # clearInterval SendStatusInterval if SendStatusInterval

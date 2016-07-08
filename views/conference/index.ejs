@@ -13,7 +13,7 @@
 </form>
 
 <% conferences.forEach(function(conference) { %>
-<li><a href="/admin/conferences/<%= conference.id %>"><%= conference.key %></a> <%= conference.name %> <%= conference.date %> <button class="del" data-id="<%= conference.id %>">DEL</button></li>
+<li><a href="/admin/conferences/<%= conference.id %>"><%= conference.key %></a> <%= conference.name %> <%= conference.date %> <button class="del btn btn-danger" data-id="<%= conference.id %>">&times;</button></li>
 <% }) %>
 
 <script>
