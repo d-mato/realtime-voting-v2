@@ -41,6 +41,11 @@ module.exports.routes = {
     locals: {layout: 'layout_client'}
   },
 
+  'get /admin': {
+    view: 'admin/index',
+    locals: {layout: 'layout_admin'}
+  },
+
   'get /admin/conferences': 'ConferenceController.index',
   'get /admin/conferences/:id': 'ConferenceController.show',
   'post /admin/conferences': 'ConferenceController.create',
