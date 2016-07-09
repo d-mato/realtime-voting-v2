@@ -18,10 +18,10 @@ module.exports =
     date:
       type: 'datetime'
       required: true
-    startTime:
-      type: 'integer'
-    endTime:
-      type: 'integer'
+    startedAt:
+      type: 'datetime'
+    stoppedAt:
+      type: 'datetime'
     name:
       type: 'string'
       required: true
@@ -36,15 +36,19 @@ module.exports =
     likes:
       collection: 'like'
       via: 'conference'
+    resetTimes:
+      collection: 'resetTime'
+      via: 'conference'
 
     # Methods
     start: (callback) ->
-      @startTime = (new Date()).getTime()
+      @startedAt = new Date()
+      @stoppedAt = null
       @status = Status.opening
       @save callback
 
     stop: (callback) ->
-      @endTime = (new Date()).getTime()
+      @stoppedAt = new Date()
       @status = Status.closed
       @save callback
 

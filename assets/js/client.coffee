@@ -22,7 +22,7 @@ io.socket.on 'conference-started', ->
 io.socket.on 'conference-stopped', ->
   update_alert 'Conference stopped!'
 
-office = '赤坂02'
+office = '赤坂'+parseInt(Math.random()*5+1)
 key = location.href.split(/conferences\//)[1] # Conference key
 
 $('.like').click ->

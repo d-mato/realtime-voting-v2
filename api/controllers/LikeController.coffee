@@ -17,6 +17,7 @@ module.exports = {
         params =
           conference: conference
           attendance: attendance
+          office: req.body.office
         Like.create(params).exec (err, item) ->
           return res.badRequest()if err or !item
           res.send item.toJSON()

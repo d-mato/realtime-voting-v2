@@ -54,6 +54,7 @@ module.exports.routes = {
   'get /admin/conferences/:id/start': 'ConferenceController.start',
   'get /admin/conferences/:id/stop': 'ConferenceController.stop',
   'get /admin/conferences/:id/reset': 'ConferenceController.reset',
+  'get /admin/conferences/:id/statistics': 'ConferenceController.statistics',
 
   'get /admin/redirects': 'RedirectController.index',
   'post /admin/redirects': 'RedirectController.create',

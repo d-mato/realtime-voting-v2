@@ -4,7 +4,7 @@ ConferenceController
 @description :: Server-side logic for managing conferences
 @help        :: See http://links.sailsjs.org/docs/controllers
 ###
-
+# require 'underscore'
 room_name = (id) -> "conference##{id}"
 
 module.exports =
@@ -14,18 +14,27 @@ module.exports =
       res.view {conferences: items}
 
   show: (req, res) ->
-    Conference.findOne(req.params.id).populate('attendances').populate('likes').exec (err, item) ->
-      return res.notFound() unless item
+    Conference.findOne(req.params.id).populate('attendances').populate('likes').populate('resetTimes').exec (err, conference) ->
+      return res.notFound() unless conference
 
-      item.all_attendances = item.attendances.filter (attendance) ->
-        # 継続的に閲覧している参加者をフィルタ => 全ての参加者
-        attendance.createdAt.toString() != attendance.updatedAt.toString()
-      item.current_attendances = item.all_attendances.filter (attendance) ->
-        # 更に最終更新が10秒以内でフィルタ => 現在の参加者
-        (new Date()).getTime() - attendance.updatedAt.getTime() < 10*1000
+      # 継続的に閲覧している参加者をフィルタ => 全ての参加者
+      conference.allAttendances = conference.attendances.filter (attendance) ->
+        attendance.createdAt.toString() != attendance.updatedAt.toString() && attendance.updatedAt > conference.startedAt
+      # 更に最終更新が10秒以内でフィルタ => 現在の参加者
+      conference.currentAttendances = conference.allAttendances.filter (attendance) ->
+        new Date() - attendance.updatedAt < 10*1000
 
-      res.view {conference: item, layout: 'layout_admin'}
-      console.log item
+      # カンファレンス開始前のlikeを除去
+      conference.likes = conference.likes.filter (like) -> conference.startedAt < like.createdAt
+
+      # 手動リセットモードのlast
+      last = if conference.resetTimes.length == 0 then conference.startedAt else _.last(conference.resetTimes).time
+
+      conference.lastAttendances = conference.allAttendances.filter( (attendance) -> attendance.updatedAt > last).length
+      conference.lastLikes = conference.likes.filter( (like) -> like.createdAt > last).length
+
+      res.view {conference, layout: 'layout_admin'}
+      console.log conference
 
   create: (req, res) ->
     params =
@@ -75,10 +84,45 @@ module.exports =
           res.ok(item.toJSON())
 
   reset: (req, res) ->
-    Conference.findOne(req.params.id).exec (err, item) ->
+    Conference.findOne(req.params.id).exec (err, conference) ->
       if err
         console.log err
         res.badRequest()
       else
-        sails.sockets.broadcast room_name(req.params.id), 'reset', {} # Broadcast
-        res.ok(item.toJSON())
+        sails.sockets.broadcast room_name(conference.id), 'reset', {} # Broadcast
+        res.ok(conference.toJSON())
+        ResetTime.create({time: new Date(), conference: conference}).exec (err, created) ->
+          if err
+            console.log err
+          else
+            console.log 'Created!\n', created
+
+  statistics: (req, res) ->
+    Conference.findOne(req.params.id).populate('attendances').populate('likes').populate('resetTimes').exec (err, conference) ->
+      return res.notFound() unless conference
+
+      likes = conference.likes.filter (like) -> conference.startedAt < like.createdAt
+
+      Timer = 60 # seconds
+      elapsed = if conference.stoppedAt # milliseconds
+        conference.stoppedAt - conference.startedAt
+      else new Date() - conference.startedAt
+
+      timeTable = [0..parseInt(elapsed / (Timer*1000))].map -> 0
+      resetTable = [0..(conference.resetTimes.length)].map -> 0
+      officeTable = {}
+
+      likes.forEach (like) ->
+        s = parseInt((like.createdAt - conference.startedAt)/1000) # 開始後何秒後にいいねされたか
+        timeTable[parseInt(s/Timer)] += 1
+
+        officeTable[like.office] ||= 0
+        officeTable[like.office] += 1
+
+        pos = 0
+        conference.resetTimes.forEach (resetTime, i) ->
+          if resetTime.time < like.createdAt
+            pos = i+1
+        resetTable[pos] += 1
+
+      res.json {likes: likes, officeTable, timeTable, resetTable}

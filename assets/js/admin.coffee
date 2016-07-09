@@ -10,8 +10,10 @@ $('.stop').click ->
   }).done (conference) ->
     $('.status span').text(conference.status)
 
-io.socket.get '/like/11', {}, (res) ->
-  console.log(res)
-
 $('.reset').on 'click', ->
   $.ajax({url: location.href+'/reset'})
+
+setInterval ->
+  $.ajax({url: location.href+'/statistics'}).done (json) ->
+    console.log json
+, 3000
