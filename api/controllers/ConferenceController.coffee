@@ -31,6 +31,8 @@ module.exports =
     params =
       date: req.body.date
       name: req.body.name
+      manualMode: !!req.body.manualMode
+
     Conference.create(params).exec (err, created) ->
       if err
         console.log err

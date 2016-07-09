@@ -20,7 +20,7 @@ class app.Views.TimeChartView extends Backbone.View
       labels = tableArray.map -> ''
     else
       if tableArray.length > 20
-        step = parseInt timeArray.length/20
+        step = parseInt tableArray.length/20
       else
         step = 1
 
