@@ -14,25 +14,18 @@
   <button class="reset btn btn-info">reset</button>
 </div>
 
-<div>
-all attendances: <%= conference.attendances.length %>
-</div>
-<div>
-current attendances: <%= conference.currentAttendances.length %>
-</div>
-
-<div>
-likes: <%= conference.likes.length %>
-</div>
-
-<div>
-last attendances: <%= conference.lastAttendancesCount %>
-</div>
-
-<div>
-last likes: <%= conference.lastLikesCount %>
-</div>
+<div class="timer">0</div>
 
 <div>
 <a href="/conferences/<%= conference.key %>" target="_blank">Client page</a>
+</div>
+
+<div>
+  <canvas id="pieChart" width="200" height="200"></canvas>
+</div>
+<div>
+  <canvas id="timeChart" width="600" height="300"></canvas>
+</div>
+<div>
+  <canvas id="officeChart" width="600" height="300"></canvas>
 </div>

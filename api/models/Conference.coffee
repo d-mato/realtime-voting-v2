@@ -112,6 +112,11 @@ module.exports =
 
       _.assign @, {timeTable, resetTable, officeTable}
 
+    timerCounter: ->
+      return 0 if @stoppedAt || @manualMode
+      elapsed = new Date() - @startedAt
+      return @timer - parseInt((elapsed % (@timer*1000))/1000)
+
   beforeCreate: (values, callback) ->
     date = (new Date(values.date))
     if date.toString() == 'Invalid Date'

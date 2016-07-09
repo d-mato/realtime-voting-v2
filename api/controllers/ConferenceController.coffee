@@ -14,14 +14,18 @@ module.exports =
       res.view {conferences: items}
 
   show: (req, res) ->
-    Conference.findOne(req.params.id).populate('attendances').populate('likes').populate('resetTimes').exec (err, conference) ->
-      return res.notFound() unless conference
+    if req.xhr
+      Conference.findOne(req.params.id).populate('attendances').populate('likes').populate('resetTimes').exec (err, conference) ->
+        return res.notFound() unless conference
 
-      conference.clean()
-      conference.runCounter()
+        conference.clean()
+        conference.runCounter()
+        res.json conference.toJSON()
 
-      res.view {conference, layout: 'layout_admin'}
-      # console.log conference
+    else
+      Conference.findOne(req.params.id).exec (err, conference) ->
+        return res.notFound() unless conference
+        res.view {conference, layout: 'layout_admin'}
 
   create: (req, res) ->
     params =
@@ -93,9 +97,8 @@ module.exports =
       conference.buildTables()
 
       data = {}
+      data.timerCounter = conference.timerCounter()
       ['officeTable', 'timeTable', 'resetTable', 'lastAttendancesCount', 'lastLikesCount', 'attendancesCount', 'likesCount'].forEach (key) ->
         data[key] = conference[key]
       res.json data
-
-
 
