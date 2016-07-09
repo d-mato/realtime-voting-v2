@@ -15,22 +15,15 @@ update_alert = (msg) ->
     alert.slideUp(500)
   , 3000
 
+io.socket.on 'reset', ->
+  reset()
+io.socket.on 'conference-started', ->
+  update_alert 'Conference started!'
+io.socket.on 'conference-stopped', ->
+  update_alert 'Conference stopped!'
+
 office = '赤坂02'
 key = location.href.split(/conferences\//)[1] # Conference key
-
-io.socket.on 'conference-stopped', (res) ->
-  if res.key == key
-    update_alert 'Conference stopped!'
-    console.log(res)
-
-io.socket.on 'conference-started', (res) ->
-  if res.key == key
-    update_alert 'Conference started!'
-    console.log(res)
-
-io.socket.on 'enabled-like', (res) ->
-  reset()
-  console.log(res)
 
 $('.like').click ->
   $(@).prop('disabled', true)
@@ -38,6 +31,6 @@ $('.like').click ->
     console.log(res) if DEBUG
 
 setInterval ->
-  $.post '/attendances', {office: office, key: key}, (res) ->
-    console.log(res) if DEBUG
+  io.socket.post '/attendances', {office: office, key: key}, (res) ->
+    # console.log(res) if DEBUG
 , 3000

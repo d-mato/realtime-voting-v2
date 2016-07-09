@@ -53,6 +53,7 @@ module.exports.routes = {
 
   'get /admin/conferences/:id/start': 'ConferenceController.start',
   'get /admin/conferences/:id/stop': 'ConferenceController.stop',
+  'get /admin/conferences/:id/reset': 'ConferenceController.reset',
 
   'get /admin/redirects': 'RedirectController.index',
   'post /admin/redirects': 'RedirectController.create',
@@ -60,6 +61,7 @@ module.exports.routes = {
 
   'post /likes': 'LikeController.create',
 
+  // io.socket.post
   'post /attendances': 'AttendanceController.create',
 
   'get /(:key)': 'RedirectController.redirect',

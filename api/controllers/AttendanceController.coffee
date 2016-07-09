@@ -12,6 +12,8 @@ module.exports = {
       return res.badRequest({error: 'Invalid conference key'}) if err or !conference
       return res.badRequest({error: 'Invalid conference status'}) unless conference.isOpening()
 
+      sails.sockets.join(req.socket, 'conference#'+conference.id)
+
       params =
         conference: conference.id
         office: req.body.office

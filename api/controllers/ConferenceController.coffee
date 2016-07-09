@@ -5,6 +5,8 @@ ConferenceController
 @help        :: See http://links.sailsjs.org/docs/controllers
 ###
 
+room_name = (id) -> "conference##{id}"
+
 module.exports =
 
   index: (req, res) ->
@@ -56,7 +58,7 @@ module.exports =
         item.start (err) ->
           return res.badRequest() if err
           console.log 'Started!', item.key
-          sails.sockets.blast 'conference-started', item.toJSON() # Broadcast
+          sails.sockets.broadcast room_name(req.params.id), 'conference-started', {} # Broadcast
           res.ok(item.toJSON())
 
 
@@ -69,5 +71,14 @@ module.exports =
         item.stop (err) ->
           return res.badRequest() if err
           console.log 'Stopped!', item.key
-          sails.sockets.blast 'conference-stopped', item.toJSON() # Broadcast
+          sails.sockets.broadcast room_name(req.params.id), 'conference-stopped', {} # Broadcast
           res.ok(item.toJSON())
+
+  reset: (req, res) ->
+    Conference.findOne(req.params.id).exec (err, item) ->
+      if err
+        console.log err
+        res.badRequest()
+      else
+        sails.sockets.broadcast room_name(req.params.id), 'reset', {} # Broadcast
+        res.ok(item.toJSON())

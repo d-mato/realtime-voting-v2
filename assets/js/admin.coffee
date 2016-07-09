@@ -12,3 +12,6 @@ $('.stop').click ->
 
 io.socket.get '/like/11', {}, (res) ->
   console.log(res)
+
+$('.reset').on 'click', ->
+  $.ajax({url: location.href+'/reset'})
